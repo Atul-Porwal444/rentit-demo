@@ -1,13 +1,13 @@
 package com.rentit.rentitserver.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -23,4 +23,10 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "postedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomPostEntity> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoommatePostEntity> roommates = new ArrayList<>();
 }
