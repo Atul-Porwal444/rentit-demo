@@ -29,4 +29,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "postedBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoommatePostEntity> roommates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "savedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavedPostEntity> savedPosts = new ArrayList<>();
 }
