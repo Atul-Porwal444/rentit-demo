@@ -1,5 +1,6 @@
 package com.rentit.rentitserver.service;
 
+import com.rentit.rentitserver.dto.RoomPostDTO;
 import com.rentit.rentitserver.entity.RoomPostEntity;
 import com.rentit.rentitserver.entity.UserEntity;
 import com.rentit.rentitserver.payload.RoomPostRequest;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,4 +48,19 @@ public class RoomPostService {
         }
     }
 
+    public List<RoomPostDTO> getAllRoomPosts() {
+        return roomPostRepository.findAll().stream()
+                .map(post -> new RoomPostDTO(
+                        post.getPostId(),
+                        post.getDescription(),
+                        post.getRoomType(),
+                        post.getRentAmount(),
+                        post.getAddress(),
+                        post.getCity(),
+                        post.getPincode(),
+                        post.getPostedBy().getUserId(),
+                        post.getPostedAt()
+                ))
+                .toList();
+    }
 }
