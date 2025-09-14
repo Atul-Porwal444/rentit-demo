@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,9 @@ public class SavePostService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
         }
+    }
+
+    public List<SavedPostEntity> getAllSavedPost(Long userId) {
+        return savePostRepository.findBySavedBy_UserId(userId);
     }
 }

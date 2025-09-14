@@ -1,5 +1,6 @@
 package com.rentit.rentitserver.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class SavedPostEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "used_id", nullable = false)
+    @JsonIgnore
     private UserEntity savedBy;
 
     private Long postId;
