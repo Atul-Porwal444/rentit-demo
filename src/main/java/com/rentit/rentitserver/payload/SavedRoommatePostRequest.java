@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavePostRequest {
+public class SavedRoommatePostRequest {
     private Long userId;
-    private Long postId;
-    private String postType;
+    private Long roommatePostId;
 }
