@@ -1,6 +1,7 @@
 package com.rentit.rentitserver.service;
 
 
+import com.rentit.rentitserver.dto.RoommatePostDTO;
 import com.rentit.rentitserver.entity.RoommatePostEntity;
 import com.rentit.rentitserver.entity.UserEntity;
 import com.rentit.rentitserver.payload.RoommatePostRequest;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -43,6 +45,37 @@ public class RoommatePostService {
             roommatePostRepository.save(roommatePostEntity);
 
             return ResponseEntity.ok().body("RoommatePost created successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
+        }
+    }
+
+    public List<RoommatePostDTO> getAllRoommatePost() {
+
+        return roommatePostRepository.findAll().stream()
+                .map(post -> new RoommatePostDTO(
+                       post.getPostId(),
+                       post.getDescription(),
+                        post.getRentAmount(),
+                        post.getRoomType(),
+                        post.getAddress(),
+                        post.getCity(),
+                        post.getPincode(),
+                        post.getPreferredGender(),
+                        post.getAvailableSeats(),
+                        post.getPostedAt(),
+                        post.getPostedBy().getUserId()
+                ))
+                .toList();
+    }
+
+    public ResponseEntity<?> deleteRoommatePost(Long postId) {
+        try {
+            if(roommatePostRepository.existsById(postId)) {
+                roommatePostRepository.deleteById(postId);
+                return ResponseEntity.ok().body("RoommatePost deleted successfully!");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("RoommatePost not found");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
         }

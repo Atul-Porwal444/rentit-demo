@@ -1,5 +1,6 @@
 package com.rentit.rentitserver.service;
 
+import com.rentit.rentitserver.dto.SavedRoomPostDTO;
 import com.rentit.rentitserver.entity.RoomPostEntity;
 import com.rentit.rentitserver.entity.SavedRoomPostEntity;
 import com.rentit.rentitserver.entity.UserEntity;
@@ -39,6 +40,40 @@ public class SavedRoomPostService {
             savedRoomPostRepository.save(savedRoomPostEntity);
 
             return ResponseEntity.ok("Post saved successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
+        }
+    }
+
+    public ResponseEntity<?> getAllSavedRoomPosts(Long userId) {
+        try {
+
+            return ResponseEntity.ok(savedRoomPostRepository.findByUserId(userId).stream()
+                    .map(savedPost -> new SavedRoomPostDTO(
+                            savedPost.getSaveId(),
+                            savedPost.getRoomPost().getPostId(),
+                            savedPost.getRoomPost().getDescription(),
+                            savedPost.getRoomPost().getRoomType(),
+                            savedPost.getRoomPost().getRentAmount(),
+                            savedPost.getRoomPost().getAddress(),
+                            savedPost.getRoomPost().getCity(),
+                            savedPost.getRoomPost().getPincode(),
+                            savedPost.getRoomPost().getPostedBy().getUserId()
+                    ))
+                    .toList());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
+        }
+    }
+
+    public ResponseEntity<?> unsaveRoomPost(Long saveId) {
+        try {
+            if(savedRoomPostRepository.existsById(saveId)){
+                savedRoomPostRepository.deleteById(saveId);
+                return ResponseEntity.ok("Room post unsaved successfully!");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Saved item not found!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong!");
         }

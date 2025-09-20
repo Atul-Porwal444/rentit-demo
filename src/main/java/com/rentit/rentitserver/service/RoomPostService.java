@@ -63,4 +63,16 @@ public class RoomPostService {
                 ))
                 .toList();
     }
+
+    public ResponseEntity<?> deleteRoomPost(Long savedId) {
+        try {
+            if(roomPostRepository.existsById(savedId)) {
+                roomPostRepository.deleteById(savedId);
+                return ResponseEntity.ok().body("Room Post Deleted Successfully!");
+            }
+            return ResponseEntity.badRequest().body("Room Post Not Found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
 }
