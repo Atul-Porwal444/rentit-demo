@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -64,11 +65,11 @@ public class JWTUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserEntity userEntity){
+    public Boolean validateToken(String token, UserDetails  userDetails) {
         try {
 
             final String email = extractUsername(token);
-            return email.equals(userEntity.getEmail()) && !isTokenExpired(token);
+            return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
 
         } catch (SignatureException | MalformedJwtException | ExpiredJwtException e) {
             return false;
