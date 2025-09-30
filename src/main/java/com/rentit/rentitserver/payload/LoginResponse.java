@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
     private String response;
-    private String token;
+    private String CsrfToken;
     private String message;
 
 }

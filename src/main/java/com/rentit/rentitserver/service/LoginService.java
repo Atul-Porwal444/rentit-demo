@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,7 +34,7 @@ public class LoginService {
 //        }
 //    }
 
-    public ResponseEntity<?> secureLogin(LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<?> secureLogin(LoginRequest loginRequest, HttpServletResponse response, CsrfToken csrfToken) {
 
         try {
             Authentication authenticate = authenticationManager.authenticate(
@@ -52,7 +53,7 @@ public class LoginService {
                 jwtCookie.setMaxAge(86400);
                 jwtCookie.setPath("/");
                 response.addCookie(jwtCookie);
-                return ResponseEntity.ok(new LoginResponse("success", token,"Login successful!"));
+                return ResponseEntity.ok(new LoginResponse("success", csrfToken.getToken(),"Login successful!"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
