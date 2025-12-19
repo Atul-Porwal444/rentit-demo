@@ -1,6 +1,6 @@
 package com.rentit.rentitserver.controller;
 
-import com.rentit.rentitserver.entity.UserEntity;
+import com.rentit.rentitserver.payload.SignupRequest;
 import com.rentit.rentitserver.service.SignupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class SignupController {
     private final SignupService signupService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserEntity userEntity) {
-        return signupService.signup(userEntity);
+    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+        return signupService.signup(signupRequest);
     }
 }
